@@ -1,17 +1,28 @@
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.Calendar;
+
 
 public class Main {
     public static void main(String[] args) throws IOException {
         MessageQueue<Screen> Mq=new MessageQueue<>();
         //ArrayDeque<Screen> sc =new ArrayDeque<>();
-     ScreenWatchdog sw=new ScreenWatchdog(Mq);
-        new Thread(sw).start();
-        ScreenWatchdog sw2=new ScreenWatchdog(Mq);
-        new Thread(sw2).start();
+     //ScreenWatchdog sw=new ScreenWatchdog(Mq);
+        //new Thread(sw).start();
+        //Thread th=new Thread(sw);
+       // th.start();
+        Robot r=null;
+        try {
+            r=new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
 
-    Form f=new Form(Mq);
+
+        //th.interrupt();
+
+        Form f=new Form(Mq);
         //Sender s=new Sender(Mq);
         //new Thread(s).start();
 

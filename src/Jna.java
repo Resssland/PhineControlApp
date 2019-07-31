@@ -19,7 +19,7 @@ import static com.sun.jna.platform.win32.WinGDI.DIB_RGB_COLORS;
 
 public class Jna {
 
-    public static BufferedImage getScreenshot(Rectangle bounds) {
+    public static void /*BufferedImage*/ getScreenshot(Rectangle bounds) {
 
         WinDef.HDC windowDC = GDI.GetDC(USER.GetDesktopWindow());
         WinDef.HBITMAP outputBitmap =
@@ -44,6 +44,7 @@ public class Jna {
                 boolean ok =
                         GDI.GetDIBits(blitDC, outputBitmap, 0, bounds.height,
                                 (byte[]) null, bi, DIB_RGB_COLORS);
+/*
                 if (ok) {
                     WinGDI.BITMAPINFOHEADER bih = bi.bmiHeader;
                     bih.biHeight = - Math.abs(bih.biHeight);
@@ -52,6 +53,7 @@ public class Jna {
                 } else {
                     return null;
                 }
+*/
             } finally {
                 GDI.DeleteObject(blitDC);
             }
@@ -119,6 +121,7 @@ public class Jna {
             default:
                 throw new AssertionError("Unexpected buffer element type: " + buffer.getDataType());
         }
+
         if (ok) {
             return new BufferedImage(cm, raster, false, null);
         } else {

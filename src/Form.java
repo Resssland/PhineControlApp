@@ -14,36 +14,45 @@ public class Form {
     JLabel jl;
     JFrame jf;
     ImageIcon ii;
+    JLabel jl2;
+    ImageIcon ii2;
     BufferedImage icon;
     private atask a;
     MessageQueue<Screen> sc;
+    Rectangle rec = null;
+    Robot robot;
+    public Form(MessageQueue<Screen> sc) throws IOException {
+        this.sc = sc;
 
-    public  Form(MessageQueue<Screen> sc) throws IOException  {
-        this.sc=sc;
-
-        jf=new JFrame("Receiver");
+        jf = new JFrame("Receiver");
         // File f=new File("C:\\Users\\Руслан\\Desktop\\im\\screen53.png");
-        //Dimension screenSize= Toolkit.getDefaultToolkit().getScreenSize();
-        //Rectangle rec=new Rectangle(0,0,screenSize.width,screenSize.height);
-        //im=Jna.getScreenshot(rec);
-        ii=new ImageIcon();
-        jl=new JLabel(ii);
+        rec = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        rec.width=rec.width;
+        rec.height=rec.height;
+
+        //im = Jna.getScreenshot(rec);
+        ii = new ImageIcon();
+        jl = new JLabel(ii);
+        //ii2 = new ImageIcon();
+        //jl2 = new JLabel(ii);
         jf.add(jl);
         jf.getContentPane().add(jl, BorderLayout.CENTER);
-        //jf.setSize(im.getWidth()/2,im.getHeight()/2);
-        //jf.setVisible(true);
-        a=new atask();
+        //jf.getContentPane().add(jl2, BorderLayout.EAST);
+        jf.setSize( rec.width,rec.height);
+        jf.setVisible(true);
+        a = new atask();
         a.execute();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
-
-
-    public class atask extends SwingWorker<Void,Screen>
-    {
+    public class atask extends SwingWorker<Void, Integer> {
 
 
         @Override
@@ -52,6 +61,7 @@ public class Form {
             while (true) {
                 //Dimension screenSize= Toolkit.getDefaultToolkit().getScreenSize();
                 //Rectangle rec=new Rectangle(0,0,screenSize.width,screenSize.height);
+                /*
                 Screen ss = (Screen) sc.pop();
                 if (ss == null) {
                     Thread.sleep(100);
@@ -65,26 +75,27 @@ public class Form {
                         jf.setSize(icon.getWidth(), icon.getHeight());
                         jf.setVisible(true);
                     }
+*/
 
-
-                    publish(ss);
-
-                }
+                publish(1);
             }
+
         }
 
 
         @Override
-        protected void process(List<Screen> b){
-            Screen ss=b.get(b.size()-1);
+        protected void process(List<Integer> b) {
+            //Screen ss=b.get(b.size()-1);
             //icon.getGraphics().drawImage(ss.getIm(),ss.getW()*ss.getX(),ss.geth()*ss.getY(),null);
-                icon.getGraphics().drawImage(ss.getBufIm(),ss.getW()*ss.getX(),ss.geth()*ss.getY(),null);
+            // icon.getGraphics().drawImage(ss.getBufIm(),ss.getW()*ss.getX(),ss.geth()*ss.getY(),null);
             //jl.setIcon(new ImageIcon(ScreenWatchdog.Resize(ss,2)));
-            jl.setIcon(new ImageIcon(icon));
+            //jl.setIcon(new ImageIcon(icon));
+            //ii.setImage(Jna.getScreenshot(rec));
+            //jl.setIcon(new ImageIcon(Jna.getScreenshot(rec)));
+            //jl2.setIcon(new ImageIcon(Jna.getScreenshot(rec)));
+            jl.setIcon(new ImageIcon(robot.createScreenCapture( new Rectangle( Toolkit.getDefaultToolkit().getScreenSize() ) )));
 
-
-
+        }
 
     }
-        }
 }

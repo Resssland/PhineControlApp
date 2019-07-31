@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -10,6 +12,7 @@ public class ScreenWatchdog implements Runnable{
     BufferedImage im2=null;
     Dimension screenSize;
     MessageQueue<Screen> Mq;
+    boolean stop=false;
 
     public ScreenWatchdog(MessageQueue<Screen>  Mq){
         screenSize= Toolkit.getDefaultToolkit().getScreenSize();
@@ -38,7 +41,7 @@ public class ScreenWatchdog implements Runnable{
             }
         }
 
-        im1=grabImage(0,0,1,1,screenSize);
+        //im1=grabImage(0,0,1,1,screenSize);
 
     }
 
@@ -51,9 +54,9 @@ public class ScreenWatchdog implements Runnable{
         int xmax=1;
         int ymax=1;
         //im1=grabImage(0,0,1,1,screenSize);
-        while(true){
+        while(!stop){
 
-            im1=grabImage(0,0,1,1,screenSize);
+            //im1=grabImage(0,0,1,1,screenSize);
             Mq.offer(new Screen(0,0,1,1,Resize(im1,2)));
             //DividerComperator(grabImage(0,0,1,1,screenSize),xmax,ymax,Mq);
             //Mq.offer(new Screen(0,0,1,1,im1));
@@ -91,14 +94,14 @@ public class ScreenWatchdog implements Runnable{
         }*/
 
     }}
-
+/*
     private BufferedImage  grabImage(int h,int w,int hmax,int wmax,Dimension screenSize)  {
         return  Jna.getScreenshot
                 (
                     new Rectangle(screenSize.width*w/wmax,screenSize.height*h/hmax,screenSize.width/wmax,screenSize.height/hmax)
                 );
 
-    }
+    }*/
         private boolean ImageComparator(BufferedImage im1,BufferedImage im2,int k){
         double width=im1.getWidth();
         double heigth=im1.getHeight();
@@ -132,11 +135,8 @@ public class ScreenWatchdog implements Runnable{
                 y++;
             }
             return afterAll;
-
-
-
-
         }
+
 
 
 
